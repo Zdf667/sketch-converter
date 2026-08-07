@@ -2,7 +2,7 @@
 
 Une application web qui transforme n'importe quelle photo en dessin au crayon, en quelques secondes, directement depuis le navigateur.
 
-**Démo en ligne :** *(à ajouter après déploiement, voir plus bas)*
+**Démo en ligne :** https://zdf-sketch-converter.streamlit.app
 
 ## Fonctionnalités
 
