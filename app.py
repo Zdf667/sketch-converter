@@ -59,12 +59,12 @@ if uploaded_file is not None:
         image.load()  # force la lecture complète pour détecter un fichier corrompu tout de suite
     except UnidentifiedImageError:
         st.error(
-            "⚠️ Ce fichier ne semble pas être une image valide. "
+            "Ce fichier ne semble pas être une image valide. "
             "Vérifie qu'il s'agit bien d'un .jpg, .jpeg ou .png non corrompu."
         )
         st.stop()
     except (IOError, OSError) as exc:
-        st.error(f"⚠️ Impossible de lire ce fichier : {exc}")
+        st.error(f"Impossible de lire ce fichier : {exc}")
         st.stop()
 
     # 2. Redimensionnement si l'image est trop grande (évite lenteur/plantage mémoire)
@@ -78,7 +78,7 @@ if uploaded_file is not None:
     try:
         sketch = image_to_sketch(image, blur_intensity)
     except ValueError as exc:
-        st.error(f"⚠️ Erreur lors de la conversion en croquis : {exc}")
+        st.error(f"Erreur lors de la conversion en croquis : {exc}")
         st.stop()
 
     col1, col2 = st.columns(2)
@@ -95,17 +95,17 @@ if uploaded_file is not None:
         buf = io.BytesIO()
         sketch_img.save(buf, format="PNG")
     except Exception as exc:
-        st.error(f"⚠️ Impossible de préparer le fichier à télécharger : {exc}")
+        st.error(f"Impossible de préparer le fichier à télécharger : {exc}")
         st.stop()
 
     st.download_button(
-        label="📥 Télécharger le croquis",
+        label="Télécharger le croquis",
         data=buf.getvalue(),
         file_name="croquis.png",
         mime="image/png",
     )
 else:
-    st.info("👆 Téléverse une image pour commencer.")
+    st.info("Téléverse une image pour commencer.")
 
 st.markdown("---")
 st.caption("Projet réalisé avec Python, OpenCV et Streamlit.")
