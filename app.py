@@ -6,7 +6,8 @@ import io
 
 st.set_page_config(page_title="Croquis Converter", page_icon="✏️", layout="wide")
 
-MAX_DIMENSION = 2000  # évite de traiter des images énormes qui ralentiraient/planteraient l'app
+# Ne pas avoir une trop grande image
+MAX_DIMENSION = 2000
 
 st.title("✏️ Convertisseur d'image en croquis au crayon")
 st.write(
@@ -42,7 +43,8 @@ def image_to_sketch(image: Image.Image, blur_value: int) -> np.ndarray:
 
     try:
         gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
-        inverted = 255 - gray
+        gray_smoothed = cv2.bilateralFilter(gray, d=9, sigmaColor=60, sigmaSpace=60)
+        inverted = 255 - gray_smoothed
         blurred = cv2.GaussianBlur(inverted, (blur_value, blur_value), 0)
         inverted_blurred = 255 - blurred
         sketch = cv2.divide(gray, inverted_blurred, scale=256.0)
@@ -67,14 +69,14 @@ if uploaded_file is not None:
         st.error(f"Impossible de lire ce fichier : {exc}")
         st.stop()
 
-    # 2. Redimensionnement si l'image est trop grande (évite lenteur/plantage mémoire)
+    # 2. Redimensionnement si l'image est trop grande
     if max(image.size) > MAX_DIMENSION:
         st.warning(
             f"Image redimensionnée automatiquement (elle dépassait {MAX_DIMENSION}px)."
         )
         image.thumbnail((MAX_DIMENSION, MAX_DIMENSION))
 
-    # 3. Conversion en croquis, avec gestion d'erreur explicite
+    # 3. Conversion en croquis avec une gestion d'erreur
     try:
         sketch = image_to_sketch(image, blur_intensity)
     except ValueError as exc:
@@ -89,7 +91,7 @@ if uploaded_file is not None:
         st.subheader("Croquis au crayon")
         st.image(sketch, use_container_width=True, clamp=True, channels="GRAY")
 
-    # 4. Préparation du téléchargement, elle aussi protégée
+    # 4. Préparation du téléchargement avec gestion d'erreur
     try:
         sketch_img = Image.fromarray(sketch)
         buf = io.BytesIO()
