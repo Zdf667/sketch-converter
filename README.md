@@ -1,4 +1,4 @@
-# ✏️ Croquis Converter
+# Croquis Converter
 
 Une application web qui transforme n'importe quelle photo en dessin au crayon, en quelques secondes, directement depuis le navigateur.
 
