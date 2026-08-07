@@ -9,7 +9,7 @@ st.set_page_config(page_title="Croquis Converter", page_icon="✏️", layout="w
 # Ne pas avoir une trop grande image
 MAX_DIMENSION = 2000
 
-st.title("✏️ Convertisseur d'image en croquis au crayon")
+st.title("Convertisseur d'image en croquis au crayon")
 st.write(
     "Téléverse une photo et transforme-la instantanément en dessin au crayon, "
     "directement dans ton navigateur."
